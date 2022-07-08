@@ -1,0 +1,5 @@
+Host *
+  AddKeysToAgent yes
+  IgnoreUnknown UseKeychain
+  UseKeychain yes
+  rosarioarobinson ~/.ssh/id_ed25519
