@@ -1,53 +1,45 @@
-// Updated for module five
-const request = require('request');
+const request = require("request");
 const apiOptions = {
-    server: 'http://localhost:3000'
+  server: "http://localhost:3000",
 };
 
-/*Internal method to render the travel list*/
-const renderTravelList = (req, res, responseBody) => {
-    let message = null;
-    let pageTitle = process.env.npm_package_description + ' - Travel';
-    if (!(responseBody instanceof Array)) {
-        message = 'API lookup error';
-        responseBody = [];
-    } else {
-        if (!responseBody.length) {
-            message = 'No trips exist in our database!';
-        }
+const renderTravelList = (rec, res, responseBody) => {
+  let message = null;
+  let pageTitle = process.env.npm_package_description + " Travel";
+
+  if (!(responseBody instanceof Array)) {
+    message = "API lookup error";
+    responseBody = [];
+  } else {
+    if (!responseBody.length) {
+      message = "No trips exist in database";
     }
-    res.render ('travel',
-        {
-            title: pageTitle,
-            trips: responseBody,
-            message
-        }
-    );
-}
+  }
+  res.render("travel", {
+    title: pageTitle,
+    trips: responseBody,
+    message,
+  });
+};
 
-/* GET travel list view */
+/* get travel list*/
 const travelList = (req, res) => {
-    const path = '/api/trips';
-    const requestOptions = {
-        url: `${apiOptions.server}${path}`,
-        method: 'GET',
-        json: {},
+  const path = "/api/trips";
+  const requestOptions = {
+    url: `${apiOptions.server}${path}`,
+    method: "GET",
+    json: {},
+  };
 
-    }; // Log on console this call over to the API
-
-    console.info(' >> travelController.travelList calling ' + requestOptions.url);
-
-    request(
-        requestOptions,
-        (err, {statusCode}, body) => {
-            if (err) {
-                console.error(err);
-            }
-            renderTravelList(req, res, body); // Call new method to handle rendering the view
-        }
-    )
-}
+  console.info(" >> travelcontroller.travelList calling" + requestOptions.url);
+  request(requestOptions, (err, { statusCode }, body) => {
+    if (err) {
+      console.error(err);
+    }
+    renderTravelList(req, res, body);
+  });
+};
 
 module.exports = {
-    travelList
+  travelList,
 };
