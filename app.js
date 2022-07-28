@@ -4,6 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const hbs = require('hbs');
+require('.app_api/database/db') // Triggers database connection and mongoose schema models to be loaded
 
 // Edited: inserted 'app_server' in path
 const indexRouter = require('./app_server/routes/index');
@@ -15,6 +16,8 @@ const contactRouter = require('./app_server/routes/contact');
 const mealsRouter = require('./app_server/routes/meals');
 const newsRouter = require('./app_server/routes/news');
 const roomsRouter = require('./app_server/routes/rooms');
+
+const apiRouter = require('./app_api/routes/index'); // References new app_api router
 
 const app = express(); 
 
@@ -43,6 +46,7 @@ app.use('/contact', contactRouter);
 app.use('/meals', mealsRouter);
 app.use('/news', newsRouter);
 app.use('/rooms', roomsRouter);
+app.use('/api', apiRouter); // Sends requests for '/api' to api router
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
